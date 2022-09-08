@@ -22,7 +22,6 @@ function Login() {
 				if (res.status === 200) {
 					dispatch(login(res.data));
 					toast('success', 'შესვლა');
-					<Content />;
 				}
 			})
 			.catch(err => {
@@ -72,7 +71,6 @@ function Login() {
 					</button>
 				</div>
 			</div>
-			<Link to='/content'>content</Link>
 		</div>
 	);
 }
