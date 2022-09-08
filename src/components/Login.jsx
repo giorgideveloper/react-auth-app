@@ -4,8 +4,6 @@ import { login } from '../redux/Auth';
 import { useRef } from 'react';
 import ApiService from '../services/ApiService';
 import toast from '../helper/Toast';
-import Content from '../components/Content';
-import { Link } from 'react-router-dom';
 
 function Login() {
 	const dispatch = useDispatch();
