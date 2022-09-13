@@ -11,7 +11,6 @@ function UserList() {
 	useEffect(() => {
 		getAllUsers();
 	}, []);
-	console.log(users);
 
 	return (
 		<>

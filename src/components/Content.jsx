@@ -7,6 +7,8 @@ import UserList from './UserList';
 function Content() {
 	const dispatch = useDispatch();
 	const auth = useSelector(state => state.auth.user);
+	const role = auth.roles.length ? auth.roles[0].role : null;
+
 	function logoutUser() {
 		dispatch(logout());
 		toast('success', `Goodbye ${auth.name}`);
@@ -14,8 +16,12 @@ function Content() {
 
 	return (
 		<>
-			<div> Hello, {auth.name} !!!!!</div>
-			<UserList />
+			<div>
+				{' '}
+				Hello, {auth.name} !!!!! {role}
+			</div>
+			{role === 'Admin' ? <UserList /> : ''}
+
 			<button
 				type='submit'
 				className='mx-1 mt-2 bg-purple-600 bg-opacity-60 block mx-auto py-1 px-10 rounded-xl text-white hover:bg-opacity-100 transition-all '
