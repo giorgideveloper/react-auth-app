@@ -20,7 +20,7 @@ function Login() {
 				if (res.status === 200) {
 					dispatch(login(res.data));
 					toast('success', 'Successfully authenticated. Redirecting...');
-					setTimeout(() => (window.location = '/'), 3000);
+					setTimeout(() => (window.location = '/'), 2000);
 				}
 			})
 			.catch(err => {
