@@ -21,4 +21,10 @@ export default {
 		//
 		return api.get(`/${endpoint}`);
 	},
+	editUser(id, str) {
+		return api.put(`/users/${id}`, { name: str });
+	},
+	deleteUser(id) {
+		return api.delete(`/users/${id}`);
+	},
 };
