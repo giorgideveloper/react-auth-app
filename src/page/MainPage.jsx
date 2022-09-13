@@ -1,7 +1,8 @@
 import React from 'react';
+import Content from '../components/Content';
 
 function MainPage() {
-	return <h1>MainPage</h1>;
+	return <Content />;
 }
 
 export default MainPage;

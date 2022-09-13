@@ -19,20 +19,15 @@ function Login() {
 			.then(res => {
 				if (res.status === 200) {
 					dispatch(login(res.data));
-					toast('success', 'შესვლა');
+					toast('success', 'Successfully authenticated. Redirecting...');
+					setTimeout(() => (window.location = '/'), 3000);
 				}
 			})
 			.catch(err => {
 				console.log(err);
 			});
 	}
-	function logoutUser() {
-		ApiService.logout().then(res => {
-			if (res.status === 200) {
-				toast('success', 'გამოსვლა');
-			}
-		});
-	}
+
 	return (
 		<div className='flex flex-row  justify-center text-center align-middle '>
 			<div className='basis-1/4  p-4  border border-purple-500 rounded-lg m-8 h-62  '>
@@ -59,13 +54,6 @@ function Login() {
 						onClick={() => loginUser()}
 					>
 						login
-					</button>
-					<button
-						type='submit'
-						className='mx-1 mt-2 bg-purple-600 bg-opacity-60 block mx-auto py-1 px-10 rounded-xl text-white hover:bg-opacity-100 transition-all '
-						onClick={() => logoutUser()}
-					>
-						logout
 					</button>
 				</div>
 			</div>
