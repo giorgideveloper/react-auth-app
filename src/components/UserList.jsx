@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer, useRef } from 'react';
 import ApiService from '../services/ApiService';
 import { MdDeleteForever } from 'react-icons/md';
 import { FiEdit } from 'react-icons/fi';
 import toast from '../helper/Toast';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function UserList() {
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
 	const [users, setUsers] = useState([]);
+	const userNameUpdate = useRef('');
+	const userEmailUpdate = useRef('');
+	const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0);
 
 	const getAllUsers = () => {
 		ApiService.getRecords('users').then(users => setUsers(users.data.data));
@@ -13,41 +24,29 @@ function UserList() {
 
 	useEffect(() => {
 		getAllUsers();
-	}, []);
+	}, [reducerValue]);
 
-	const editUsers = (id, str) => {
-		ApiService.editUser(id, {});
+	const editUsers = (endpoint, id, data) => {
+		ApiService.editRecord(endpoint, id, data);
+		console.log(userNameUpdate.current.value);
+		handleClose();
+		forceUpdate();
 	};
 
-	const deleteUsers = id => {
+	/* 	const deleteUsers = id => {
 		ApiService.deleteUser(id);
 		console.log(id);
 		toast('success', 'Delete user successfully');
-		setTimeout(() => window.location.reload(), 2000);
+		forceUpdate();
+	}; */
+	const item = useRef({});
+	console.log(item);
+	const changeItem = obj => {
+		item.current.value = obj;
+		console.log(item.name);
 	};
-
 	return (
 		<>
-			{/* <ul role='list' className='p-6 divide-y divide-slate-200'>
-				{users?.map(item => (
-					<li key={item.id} className='flex py-4 first:pt-0 last:pb-0'>
-						<img
-							className='h-10 w-10 rounded-full'
-							src='https://ui-avatars.com/api/?background=random'
-							alt='avatar'
-						/>
-						<div className='ml-3 overflow-hidden'>
-							<p className='text-sm font-medium text-slate-900'>
-								{item.name}
-								<MdDeleteForever className='inline float-right text-lg cursor-pointer' />
-								<FiEdit className='inline float-right text-lg cursor-pointer' />
-							</p>
-							<p className='text-sm text-slate-500 truncate'>{item.email}</p>
-						</div>
-					</li>
-				))}
-			</ul> */}
-
 			<table className=' flex justify-center w-full text-lg '>
 				<tbody>
 					<tr>
@@ -60,14 +59,64 @@ function UserList() {
 							<td className='pl-5'>
 								{item.email}{' '}
 								<span className='flex float-right text-xl mt-1 cursor-pointer'>
-									<FiEdit onClick={() => editUsers(item.id)} />
-									<MdDeleteForever onClick={() => deleteUsers(item.id)} />
+									<FiEdit
+										onClick={() => {
+											handleShow();
+											changeItem(item);
+										}}
+									/>
+									{/* 	<MdDeleteForever onClick={() => deleteUsers(item.id)} /> */}
 								</span>
 							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
+			<Modal key={item.id} show={show} onHide={handleClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>Edit user</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<Form>
+						<Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
+							<Form.Label>Name</Form.Label>
+							<Form.Control
+								type='name'
+								placeholder='name'
+								autoFocus
+								ref={userNameUpdate}
+								defaultValue={item.name}
+							/>
+						</Form.Group>
+						<Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
+							<Form.Label>Email address</Form.Label>
+							<Form.Control
+								type='email'
+								placeholder='name@example.com'
+								autoFocus
+								ref={userEmailUpdate}
+								defaultValue={item.email}
+							/>
+						</Form.Group>
+					</Form>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant='secondary' onClick={handleClose}>
+						Close
+					</Button>
+					<Button
+						variant='primary'
+						onClick={() =>
+							editUsers('users', item.id, {
+								name: userNameUpdate.current.value,
+								email: userEmailUpdate.current.value,
+							})
+						}
+					>
+						Save Changes
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 }

@@ -21,8 +21,8 @@ export default {
 		//
 		return api.get(`/${endpoint}`);
 	},
-	editUser(id, str) {
-		return api.put(`/users/${id}`, { name: str });
+	editRecord(endpoint, id, data) {
+		return api.put(`/${endpoint}/${id}`, { data });
 	},
 	deleteUser(id) {
 		return api.delete(`/users/${id}`);
