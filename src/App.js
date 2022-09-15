@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './page/LoginPage';
 import MainPage from './page/MainPage';
 import LoginGate from './components/LoginGate';
+import Notfoundpage from './page/Notfoundpage';
 
 function App() {
 	return (
@@ -25,6 +26,7 @@ function App() {
 					</LoginGate>
 				}
 			/>
+			<Route path='*' element={<Notfoundpage />} />
 		</Routes>
 	);
 }

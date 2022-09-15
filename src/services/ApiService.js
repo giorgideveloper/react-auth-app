@@ -22,9 +22,9 @@ export default {
 		return api.get(`/${endpoint}`);
 	},
 	editRecord(endpoint, id, data) {
-		return api.put(`/${endpoint}/${id}`, { data });
+		return api.put(`/${endpoint}/${id}`, data);
 	},
-	deleteUser(id) {
-		return api.delete(`/users/${id}`);
+	deleteUser(endpoint, id) {
+		return api.delete(`/${endpoint}/${id}`);
 	},
 };

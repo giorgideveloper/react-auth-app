@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { FiEdit } from 'react-icons/fi';
+import ApiService from '../services/ApiService';
 
-function MyModal() {
+function MyModal({ id, name, email }) {
+	//Boostrap Modal
 	const [show, setShow] = useState(false);
-
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+	// Name and Email Ref
+	const userNameUpdate = useRef('');
+	const userEmailUpdate = useRef('');
+	/* const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0); */
+
+	const editUsers = (endpoint, id, data) => {
+		ApiService.editRecord(endpoint, id, data);
+		handleClose();
+		/* forceUpdate(); */
+	};
 
 	return (
 		<>
-			<Button variant='primary' onClick={handleShow}>
-				Launch demo modal
-			</Button>
-
+			<FiEdit
+				onClick={() => {
+					handleShow();
+				}}
+			/>
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Edit user</Modal.Title>
@@ -23,14 +36,22 @@ function MyModal() {
 					<Form>
 						<Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
 							<Form.Label>Name</Form.Label>
-							<Form.Control type='name' placeholder='name' autoFocus />
+							<Form.Control
+								type='name'
+								placeholder='name'
+								defaultValue={name}
+								autoFocus
+								ref={userNameUpdate}
+							/>
 						</Form.Group>
 						<Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
 							<Form.Label>Email address</Form.Label>
 							<Form.Control
 								type='email'
 								placeholder='name@example.com'
+								defaultValue={email}
 								autoFocus
+								ref={userEmailUpdate}
 							/>
 						</Form.Group>
 					</Form>
@@ -39,7 +60,16 @@ function MyModal() {
 					<Button variant='secondary' onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant='primary' onClick={handleClose}>
+					<Button
+						variant='primary'
+						onClick={() =>
+							editUsers('users', id, {
+								name: userNameUpdate.current.value,
+								email: userEmailUpdate.current.value,
+								device_name: window.navigator.userAgent,
+							})
+						}
+					>
 						Save Changes
 					</Button>
 				</Modal.Footer>
