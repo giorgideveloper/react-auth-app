@@ -3,6 +3,7 @@ import ApiService from '../services/ApiService';
 import { MdDeleteForever } from 'react-icons/md';
 import toast from '../helper/Toast';
 import MyModal from './MyModal';
+import confirm from '../helper/Confirm';
 
 function UserList() {
 	const [users, setUsers] = useState([]);
@@ -17,12 +18,14 @@ function UserList() {
 	}, [reducerValue]);
 
 	const deleteUsers = id => {
-		ApiService.deleteUser('users', id);
-
-		toast('success', 'Delete user successfully');
-		forceUpdate();
+		confirm().then(result => {
+			if (result.isConfirmed) {
+				ApiService.deleteUser('users', id);
+				toast('success', 'Delete user successfully');
+				forceUpdate();
+			}
+		});
 	};
-
 	return (
 		<>
 			<table className=' flex justify-center w-full text-lg '>

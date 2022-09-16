@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -13,12 +13,12 @@ function MyModal({ id, name, email }) {
 	// Name and Email Ref
 	const userNameUpdate = useRef('');
 	const userEmailUpdate = useRef('');
-	/* const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0); */
+	const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0);
 
 	const editUsers = (endpoint, id, data) => {
 		ApiService.editRecord(endpoint, id, data);
 		handleClose();
-		/* forceUpdate(); */
+		forceUpdate();
 	};
 
 	return (
