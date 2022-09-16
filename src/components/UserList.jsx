@@ -4,17 +4,16 @@ import { MdDeleteForever } from 'react-icons/md';
 import toast from '../helper/Toast';
 import MyModal from './MyModal';
 import confirm from '../helper/Confirm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllUsers } from '../redux/Users';
 
 function UserList() {
-	const [users, setUsers] = useState([]);
+	const dispatch = useDispatch();
+	const users = useSelector(state => state.users.users);
 	const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0);
 
-	const getAllUsers = () => {
-		ApiService.getRecords('users').then(users => setUsers(users.data.data));
-	};
-
 	useEffect(() => {
-		getAllUsers();
+		dispatch(getAllUsers());
 	}, [reducerValue]);
 
 	const deleteUsers = id => {
@@ -26,6 +25,7 @@ function UserList() {
 			}
 		});
 	};
+	console.log(users);
 	return (
 		<>
 			<table className=' flex justify-center w-full text-lg '>
