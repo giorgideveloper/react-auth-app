@@ -1,9 +1,10 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { FiEdit } from 'react-icons/fi';
-import ApiService from '../services/ApiService';
+import { useDispatch } from 'react-redux';
+import { editUser } from '../redux/Users';
 
 function MyModal({ id, name, email }) {
 	//Boostrap Modal
@@ -13,12 +14,11 @@ function MyModal({ id, name, email }) {
 	// Name and Email Ref
 	const userNameUpdate = useRef('');
 	const userEmailUpdate = useRef('');
-	const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0);
+	const dispatch = useDispatch();
 
 	const editUsers = (endpoint, id, data) => {
-		ApiService.editRecord(endpoint, id, data);
+		dispatch(editUser({ endpoint, id, data }));
 		handleClose();
-		forceUpdate();
 	};
 
 	return (

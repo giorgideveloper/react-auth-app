@@ -1,31 +1,32 @@
-import React, { useEffect, useState, useReducer, useRef } from 'react';
+import React, { useEffect } from 'react';
 import ApiService from '../services/ApiService';
 import { MdDeleteForever } from 'react-icons/md';
-import toast from '../helper/Toast';
 import MyModal from './MyModal';
-import confirm from '../helper/Confirm';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUsers } from '../redux/Users';
+import { deleteUser, getUsers } from '../redux/Users';
+import confirm from '../helper/Confirm';
 
 function UserList() {
 	const dispatch = useDispatch();
-	const users = useSelector(state => state.users.users);
-	const [reducerValue, forceUpdate] = useReducer(x => x + 1, 0);
+	const storeUsers = useSelector(state => state.users.users);
 
-	useEffect(() => {
-		dispatch(getAllUsers());
-	}, [reducerValue]);
+	async function getAllUsers() {
+		const response = await ApiService.getRecords('users');
+		dispatch(getUsers(response.data.data));
+	}
 
 	const deleteUsers = id => {
 		confirm().then(result => {
 			if (result.isConfirmed) {
-				ApiService.deleteUser('users', id);
-				toast('success', 'Delete user successfully');
-				forceUpdate();
+				dispatch(deleteUser(id));
 			}
 		});
 	};
-	console.log(users);
+
+	useEffect(() => {
+		getAllUsers();
+	}, []);
+
 	return (
 		<>
 			<table className=' flex justify-center w-full text-lg '>
@@ -34,7 +35,7 @@ function UserList() {
 						<th>Name</th>
 						<th>Email</th>
 					</tr>
-					{users?.map(item => (
+					{storeUsers?.map(item => (
 						<tr key={item.id} className='odd:bg-white even:bg-slate-50 p-2'>
 							<td>{item.name} </td>
 							<td className='pl-5'>
