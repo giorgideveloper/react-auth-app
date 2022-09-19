@@ -11,11 +11,13 @@ function MyModal({ id, name, email }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
 	// Name and Email Ref
 	const userNameUpdate = useRef('');
 	const userEmailUpdate = useRef('');
 	const dispatch = useDispatch();
 
+	// Edit user function
 	const editUsers = (endpoint, id, data) => {
 		dispatch(editUser({ endpoint, id, data }));
 		handleClose();

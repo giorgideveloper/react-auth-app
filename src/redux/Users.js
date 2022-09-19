@@ -9,9 +9,17 @@ export const usersSlice = createSlice({
 	},
 
 	reducers: {
+		// Get all users
 		getUsers(state, action) {
 			state.users = action.payload;
 		},
+		// Add user
+		AddUser(state, action) {
+			ApiService.addRecord(action.payload.endpoint, action.payload.data);
+			state.users = [...state.users, action.payload.data];
+			toast('success', 'Add user successfully');
+		},
+		// Edit user
 		editUser(state, action) {
 			ApiService.editRecord(
 				action.payload.endpoint,
@@ -33,6 +41,7 @@ export const usersSlice = createSlice({
 			state.users = newArr;
 			toast('success', 'Edit user successfully');
 		},
+		// Delete user
 		deleteUser(state, action) {
 			ApiService.deleteUser('users', action.payload);
 			let newUsers = state.users.filter(user => user.id !== action.payload);
@@ -43,6 +52,6 @@ export const usersSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { getUsers, editUser, deleteUser } = usersSlice.actions;
+export const { getUsers, AddUser, editUser, deleteUser } = usersSlice.actions;
 
 export default usersSlice.reducer;

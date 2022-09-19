@@ -21,6 +21,9 @@ export default {
 		//
 		return api.get(`/${endpoint}`);
 	},
+	addRecord(endpoint, data) {
+		return api.post(`/${endpoint}`, data);
+	},
 	editRecord(endpoint, id, data) {
 		return api.put(`/${endpoint}/${id}`, data);
 	},

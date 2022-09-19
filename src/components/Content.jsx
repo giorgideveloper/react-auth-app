@@ -9,6 +9,7 @@ function Content() {
 	const auth = useSelector(state => state.auth.user);
 	const role = auth.roles.length ? auth.roles[0].role : null;
 
+	// Logout user function
 	function logoutUser() {
 		dispatch(logout());
 		toast('success', `Goodbye ${auth.name}`);

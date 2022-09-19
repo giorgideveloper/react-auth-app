@@ -10,6 +10,7 @@ function Login() {
 	const emailRef = useRef('');
 	const passwordRef = useRef('');
 
+	// Login user function
 	function loginUser() {
 		ApiService.login({
 			email: emailRef.current.value,
