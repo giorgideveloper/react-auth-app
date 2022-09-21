@@ -15,8 +15,18 @@ export const usersSlice = createSlice({
 		},
 		// Add user
 		AddUser(state, action) {
+			const lastUser = state.users.at(-1);
+
 			ApiService.addRecord(action.payload.endpoint, action.payload.data);
-			state.users = [...state.users, action.payload.data];
+			state.users = [
+				...state.users,
+				{
+					id: lastUser.id + 1,
+					name: action.payload.data.name,
+					email: action.payload.data.email,
+					password: action.payload.data.password,
+				},
+			];
 			toast('success', 'Add user successfully');
 		},
 		// Edit user
