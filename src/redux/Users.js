@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiService from '../services/ApiService';
 import toast from '../helper/Toast';
 
@@ -8,10 +8,19 @@ export const usersSlice = createSlice({
 		users: [],
 	},
 
+	extraReducers(builder) {
+		builder.addCase(getUsers.fulfilled, (state, action) => {
+			state.users = state.users.concat(action.payload);
+		});
+	},
 	reducers: {
 		// Get all users
-		getUsers(state, action) {
-			state.users = action.payload;
+		// getUsers(state, action) {
+		// 	state.users = action.payload;
+		// },
+
+		clearUsers(state, action) {
+			state.users = [];
 		},
 		// Add user
 		AddUser(state, action) {
@@ -60,8 +69,11 @@ export const usersSlice = createSlice({
 		},
 	},
 });
-
+export const getUsers = createAsyncThunk('users/getUsers', async () => {
+	const response = await ApiService.getRecords(usersSlice.name);
+	return response.data.data;
+});
 // Action creators are generated for each case reducer function
-export const { getUsers, AddUser, editUser, deleteUser } = usersSlice.actions;
+export const { AddUser, editUser, deleteUser, clearUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

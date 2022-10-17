@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/Auth';
 import { useRef } from 'react';
-import ApiService from '../services/ApiService';
 import toast from '../helper/Toast';
 
 function Login() {
@@ -12,21 +11,15 @@ function Login() {
 
 	// Login user function
 	function loginUser() {
-		ApiService.login({
-			email: emailRef.current.value,
-			password: passwordRef.current.value,
-			device_name: window.navigator.userAgent,
-		})
-			.then(res => {
-				if (res.status === 200) {
-					dispatch(login(res.data));
-					toast('success', 'Successfully authenticated. Redirecting...');
-					setTimeout(() => (window.location = '/'), 2000);
-				}
+		dispatch(
+			login({
+				email: emailRef.current.value,
+				password: passwordRef.current.value,
+				device_name: window.navigator.userAgent,
 			})
-			.catch(err => {
-				console.log(err);
-			});
+		);
+		toast('success', 'Successfully authenticated. Redirecting...');
+		setTimeout(() => (window.location = '/'), 1000);
 	}
 
 	return (

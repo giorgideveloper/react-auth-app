@@ -7,7 +7,6 @@ import UserList from './UserList';
 function Content() {
 	const dispatch = useDispatch();
 	const auth = useSelector(state => state.auth.user);
-	const role = auth.roles.length ? auth.roles[0].role : null;
 
 	// Logout user function
 	function logoutUser() {
@@ -30,7 +29,6 @@ function Content() {
 								{' '}
 								Welcome: <span className='font-bold'>{auth.name}</span>
 							</p>
-							<p className='text-sx text-slate-500 truncate'>{role}</p>
 						</div>
 						<div className='flex justify-end float-right right '>
 							<button
@@ -44,8 +42,7 @@ function Content() {
 					</li>
 				</ul>{' '}
 			</div>
-
-			{role === 'Admin' ? <UserList /> : ''}
+			<UserList />
 		</>
 	);
 }

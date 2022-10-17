@@ -3,7 +3,7 @@ import ApiService from '../services/ApiService';
 import { MdDeleteForever } from 'react-icons/md';
 import MyModal from './MyModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getUsers } from '../redux/Users';
+import { clearUsers, deleteUser, getUsers } from '../redux/Users';
 import confirm from '../helper/Confirm';
 import AddNewUser from './AddUser';
 
@@ -11,12 +11,6 @@ function UserList() {
 	// Store redux
 	const dispatch = useDispatch();
 	const storeUsers = useSelector(state => state.users.users);
-
-	// Get All Users function
-	async function getAllUsers() {
-		const response = await ApiService.getRecords('users');
-		dispatch(getUsers(response.data.data));
-	}
 
 	// Delete All Users function
 	const deleteUsers = id => {
@@ -29,8 +23,11 @@ function UserList() {
 
 	// UseEffect All Users function
 	useEffect(() => {
-		getAllUsers();
-	}, []);
+		dispatch(getUsers());
+		return () => {
+			dispatch(clearUsers());
+		};
+	}, [dispatch]);
 
 	return (
 		<>
