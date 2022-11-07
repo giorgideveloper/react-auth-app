@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../redux/Auth';
 import { useRef } from 'react';
 import toast from '../helper/Toast';
+import { Navigate } from 'react-router-dom';
 
 function Login() {
 	const dispatch = useDispatch();
@@ -18,8 +19,8 @@ function Login() {
 				device_name: window.navigator.userAgent,
 			})
 		);
-		toast('success', 'Successfully authenticated. Redirecting...');
-		setTimeout(() => (window.location = '/'), 1000);
+		toast('success', 'Successfully authenticated.');
+		<Navigate to='/' replace={true} />;
 	}
 
 	return (

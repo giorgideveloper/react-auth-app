@@ -2,10 +2,8 @@ import axios from 'axios';
 
 const api = axios.create({
 	baseURL: 'https://frenchschool.jrwebdeveloper.com/api/v1',
-	withCredentials: true,
 	headers: {
 		Accept: 'application/json',
-		Authorization: `Bearer ${sessionStorage.getItem('token')}`,
 		'Content-Type': 'application/json',
 	},
 });
@@ -29,5 +27,13 @@ export default {
 	},
 	deleteUser(endpoint, id) {
 		return api.delete(`/${endpoint}/${id}`);
+	},
+	setHeaders(token) {
+		api.defaults.withCredentials = true;
+		api.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+	},
+	clearHeaders() {
+		api.defaults.withCredentials = false;
+		delete api.defaults.headers.common['Authorization'];
 	},
 };

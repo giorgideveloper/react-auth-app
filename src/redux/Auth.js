@@ -19,6 +19,7 @@ export const authSlice = createSlice({
 			.addCase(logout.fulfilled, (state, action) => {
 				state.status = 'fulfilled';
 				sessionStorage.clear();
+				ApiService.clearHeaders();
 				state.user = null;
 			})
 			.addCase(logout.rejected, (state, action) => {
@@ -33,6 +34,7 @@ export const authSlice = createSlice({
 				state.status = 'fulfilled';
 				state.user = action.payload;
 				sessionStorage.setItem('token', action.payload['token']);
+				ApiService.setHeaders(action.payload['token']);
 				sessionStorage.setItem('user', JSON.stringify(action.payload['user']));
 			})
 			.addCase(login.rejected, (state, action) => {

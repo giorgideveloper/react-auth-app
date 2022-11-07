@@ -11,7 +11,7 @@ function Content() {
 	// Logout user function
 	function logoutUser() {
 		dispatch(logout());
-		toast('success', `Goodbye ${auth.name}`);
+		toast('success', `Goodbye`);
 	}
 
 	return (
